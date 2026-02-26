@@ -1,5 +1,7 @@
 import type { Player, PlayersQueryParams, PlayersResponse } from "../types/player";
 
+// Relative path — Vite proxy forwards to http://localhost:20000 in dev,
+// and in production the server itself serves the built assets.
 const API_BASE = "/api/v1";
 
 export const fetchPlayers = async (
@@ -18,6 +20,7 @@ export const fetchPlayers = async (
   }
 
   const players: Player[] = await response.json();
+  // Server returns total matching count via custom header, used for pagination
   const total = Number(response.headers.get("x-total") ?? 0);
 
   return { players, total };

@@ -7,28 +7,30 @@ interface TooltipProps {
   className?: string;
 }
 
+// Portal-based tooltip — renders at document.body with fixed positioning
+// so it's never clipped by the table's overflow:auto container.
 export const Tooltip = ({ content, children, className = "inline-flex" }: TooltipProps) => {
   const [visible, setVisible] = useState(false);
   const [coords, setCoords] = useState({ x: 0, y: 0 });
   const ref = useRef<HTMLSpanElement>(null);
 
-  const show = () => {
+  const handleShow = () => {
     if (!ref.current) return;
     const rect = ref.current.getBoundingClientRect();
     setCoords({ x: rect.left + rect.width / 2, y: rect.top });
     setVisible(true);
   };
 
-  const hide = () => setVisible(false);
+  const handleHide = () => setVisible(false);
 
   return (
     <span
       ref={ref}
       className={className}
-      onMouseEnter={show}
-      onMouseLeave={hide}
-      onFocus={show}
-      onBlur={hide}
+      onMouseEnter={handleShow}
+      onMouseLeave={handleHide}
+      onFocus={handleShow}
+      onBlur={handleHide}
     >
       {children}
       {visible &&

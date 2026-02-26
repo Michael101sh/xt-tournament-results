@@ -3,6 +3,8 @@ import { type Row } from "@tanstack/react-table";
 import { cn } from "../../lib/utils";
 import { TableCell } from "./TableCell";
 
+// Memoized row — accepts optional className for row-level styling (e.g., suspect highlight)
+
 interface TableRowProps<TData> {
   row: Row<TData>;
   className?: string;

@@ -1,6 +1,7 @@
 import { type Table } from "@tanstack/react-table";
-import { DataTable } from "./DataTable";
+import { DataTable } from "./data-table";
 import { SearchInput } from "./SearchInput";
+import { cn } from "../lib/utils";
 import type { Player } from "../types/player";
 
 interface PlayerTableProps {
@@ -18,6 +19,8 @@ interface PlayerTableProps {
   onPageSizeChange: (size: number) => void;
 }
 
+// Player-specific table wrapper — adds search, player count, and refresh controls
+// above the generic DataTable component.
 export const PlayerTable = ({
   table,
   totalPlayers,
@@ -48,7 +51,7 @@ export const PlayerTable = ({
           className="inline-flex h-8 w-8 items-center justify-center rounded-lg border border-slate-200 bg-white text-slate-500 shadow-sm transition-colors hover:bg-slate-50 hover:text-slate-700 focus:outline-none focus:ring-2 focus:ring-indigo-400 focus:ring-offset-1"
         >
           <svg
-            className={`h-4 w-4 ${isLoading ? "animate-spin" : ""}`}
+            className={cn("h-4 w-4", isLoading && "animate-spin")}
             fill="none"
             viewBox="0 0 24 24"
             stroke="currentColor"

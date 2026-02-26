@@ -1,3 +1,4 @@
+// Shown when a search or filter returns zero matching players
 export const EmptyState = () => (
   <div className="flex flex-col items-center justify-center py-20 text-slate-400">
     <svg

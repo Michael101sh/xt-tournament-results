@@ -2,6 +2,8 @@ import { memo } from "react";
 import { type HeaderGroup } from "@tanstack/react-table";
 import { TableHeaderCell } from "./TableHeaderCell";
 
+// Memoized to avoid re-rendering the entire header row on every table update
+
 interface TableHeaderGroupProps<TData> {
   headerGroup: HeaderGroup<TData>;
 }

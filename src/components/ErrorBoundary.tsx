@@ -1,5 +1,7 @@
 import { Component, type ErrorInfo, type ReactNode } from "react";
 
+// Class component required — React has no hook-based error boundary API yet.
+// Wraps the entire app tree to catch unhandled render errors gracefully.
 interface Props {
   children: ReactNode;
 }
@@ -52,7 +54,10 @@ export class ErrorBoundary extends Component<Props, State> {
             {this.state.error?.message ?? "An unexpected error occurred."}
           </p>
           <button
+            type="button"
             onClick={() => window.location.reload()}
+            aria-label="Reload the page"
+            tabIndex={0}
             className="mt-5 rounded-lg bg-indigo-600 px-4 py-2 text-sm font-medium text-white shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
           >
             Reload page

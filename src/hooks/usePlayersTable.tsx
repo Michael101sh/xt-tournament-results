@@ -9,10 +9,13 @@ import { usePlayersQuery } from "./usePlayersQuery";
 import { useSuspectsQuery } from "./useSuspectsQuery";
 import { useDebounce } from "./useDebounce";
 import { useLocalStorage } from "./useLocalStorage";
-import { Tooltip } from "../components/Tooltip";
+import { Tooltip } from "../components/ui/Tooltip";
 import { LevelFilter } from "../components/LevelFilter";
 import { capitalize, cn } from "../lib/utils";
 import type { Player, PlayerLevel } from "../types/player";
+
+// Central hook that wires together data fetching, suspect detection, column
+// definitions, pagination, filtering, and search — keeping the UI component thin.
 
 const LEVEL_DESCRIPTIONS: Record<Player["level"], string> = {
   rookie: "Entry-level competitor",
@@ -74,6 +77,7 @@ export const usePlayersTable = () => {
   const totalPlayers = data?.total ?? 0;
   const totalPages = Math.ceil(totalPlayers / pagination.pageSize);
 
+  // Set for O(1) suspect lookups when rendering each row
   const suspectSet = useMemo(
     () => new Set(suspectIds ?? []),
     [suspectIds],
@@ -187,6 +191,7 @@ export const usePlayersTable = () => {
     [levelFilter, handleLevelChange, suspectSet],
   );
 
+  // manualPagination: true — server handles page slicing, we only track page state
   const table = useReactTable({
     data: players,
     columns,

@@ -1,6 +1,8 @@
 import { memo } from "react";
 import { flexRender, type Cell } from "@tanstack/react-table";
 
+// Memoized cell — fixed width from column definition to prevent layout shifts between pages
+
 interface TableCellProps<TData> {
   cell: Cell<TData, unknown>;
 }

@@ -1,3 +1,4 @@
+// Fixed header with blurred backdrop — stays visible above the scrollable table
 export const Header = () => (
   <div className="shrink-0 border-b border-slate-200/60 bg-white/60 backdrop-blur-md">
     <div className="mx-auto max-w-5xl px-4 py-6 sm:px-6 lg:px-8">

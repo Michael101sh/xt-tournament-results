@@ -3,6 +3,7 @@ import { ErrorCard } from "./components/ErrorCard";
 import { PlayerTable } from "./components/PlayerTable";
 import { usePlayersTable, PAGE_SIZE_OPTIONS } from "./hooks/usePlayersTable";
 
+// Thin shell — all data logic lives in usePlayersTable, UI in child components
 const App = () => {
   const {
     table,
@@ -20,6 +21,7 @@ const App = () => {
     refetch,
   } = usePlayersTable();
 
+  // Early return: show error card with retry when API is unreachable
   if (isError) {
     const message =
       error instanceof Error ? error.message : "An unexpected error occurred.";

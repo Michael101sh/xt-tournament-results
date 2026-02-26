@@ -1,6 +1,8 @@
 import { memo } from "react";
 import { flexRender, type Header } from "@tanstack/react-table";
 
+// Memoized header cell — uses flexRender to support custom header components (e.g., LevelFilter)
+
 interface TableHeaderCellProps<TData> {
   header: Header<TData, unknown>;
 }

@@ -1,3 +1,5 @@
+// Absolute-positioned overlay inside the table container — only shown after
+// a deferred delay (see useDeferredLoading) to avoid flicker on fast responses.
 export const LoadingOverlay = () => (
   <div className="absolute inset-0 z-20 flex items-center justify-center rounded-xl bg-white/70 backdrop-blur-sm">
     <div className="flex items-center gap-3 text-sm font-medium text-slate-500">

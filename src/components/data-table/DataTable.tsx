@@ -2,7 +2,7 @@ import { type ReactNode, useMemo } from "react";
 import { type Table } from "@tanstack/react-table";
 import { TableHeaderGroup } from "./TableHeaderGroup";
 import { TableRow } from "./TableRow";
-import { Pagination } from "../Pagination";
+import { Pagination } from "./Pagination";
 import { LoadingOverlay } from "../LoadingOverlay";
 import { EmptyState } from "./EmptyState";
 import { useDeferredLoading } from "../../hooks/useDeferredLoading";
@@ -20,6 +20,8 @@ interface DataTableProps<TData> {
   emptyState?: ReactNode;
 }
 
+// Generic, reusable data table with deferred loading overlay, pagination footer,
+// page-jump dropdown, and rows-per-page selector.
 export const DataTable = <TData,>({
   table,
   rowClassName,
@@ -35,6 +37,8 @@ export const DataTable = <TData,>({
   const headerGroups = table.getHeaderGroups();
   const { rows } = table.getRowModel();
 
+  // Pre-compute row class names into a Map so rendering doesn't call the
+  // callback per-row on every render — only recomputed when rows change.
   const rowClassNames = useMemo(() => {
     if (!rowClassName) return undefined;
     return new Map(rows.map((row) => [row.id, rowClassName(row.original)]));
