@@ -11,39 +11,21 @@ import { Pagination } from "./components/Pagination";
 import { capitalize, cn } from "./lib/utils";
 import type { Player } from "./types/player";
 
-// 30 rows so pagination is clearly visible across multiple pages
-const SAMPLE_PLAYERS: Player[] = [
-  { id: 1, name: "alice", level: "rookie", score: 84 },
-  { id: 2, name: "bob", level: "pro", score: 136 },
-  { id: 3, name: "charlie", level: "amateur", score: 102 },
-  { id: 4, name: "diana", level: "pro", score: 158 },
-  { id: 5, name: "eve", level: "rookie", score: 47 },
-  { id: 6, name: "frank", level: "amateur", score: 119 },
-  { id: 7, name: "grace", level: "pro", score: 145 },
-  { id: 8, name: "hank", level: "rookie", score: 63 },
-  { id: 9, name: "ivy", level: "amateur", score: 91 },
-  { id: 10, name: "jake", level: "pro", score: 172 },
-  { id: 11, name: "karen", level: "rookie", score: 55 },
-  { id: 12, name: "leo", level: "amateur", score: 128 },
-  { id: 13, name: "mia", level: "pro", score: 164 },
-  { id: 14, name: "noah", level: "rookie", score: 39 },
-  { id: 15, name: "olivia", level: "amateur", score: 110 },
-  { id: 16, name: "pete", level: "pro", score: 149 },
-  { id: 17, name: "quinn", level: "rookie", score: 72 },
-  { id: 18, name: "rita", level: "amateur", score: 97 },
-  { id: 19, name: "sam", level: "pro", score: 181 },
-  { id: 20, name: "tina", level: "rookie", score: 68 },
-  { id: 21, name: "ursula", level: "amateur", score: 114 },
-  { id: 22, name: "victor", level: "pro", score: 155 },
-  { id: 23, name: "wendy", level: "rookie", score: 42 },
-  { id: 24, name: "xavier", level: "amateur", score: 105 },
-  { id: 25, name: "yara", level: "pro", score: 169 },
-  { id: 26, name: "zach", level: "rookie", score: 58 },
-  { id: 27, name: "amber", level: "amateur", score: 122 },
-  { id: 28, name: "blake", level: "pro", score: 143 },
-  { id: 29, name: "cora", level: "rookie", score: 76 },
-  { id: 30, name: "derek", level: "amateur", score: 99 },
+// Generate 150 sample players to demo pagination with many pages
+const NAMES = [
+  "alice", "bob", "charlie", "diana", "eve", "frank", "grace", "hank", "ivy",
+  "jake", "karen", "leo", "mia", "noah", "olivia", "pete", "quinn", "rita",
+  "sam", "tina", "ursula", "victor", "wendy", "xavier", "yara", "zach",
+  "amber", "blake", "cora", "derek",
 ];
+const LEVELS: Player["level"][] = ["rookie", "amateur", "pro"];
+
+const SAMPLE_PLAYERS: Player[] = Array.from({ length: 150 }, (_, i) => ({
+  id: i + 1,
+  name: NAMES[i % NAMES.length],
+  level: LEVELS[i % LEVELS.length],
+  score: 30 + Math.round(Math.sin(i * 0.7) * 60 + 80),
+}));
 
 const LEVEL_STYLES: Record<Player["level"], string> = {
   rookie: "bg-emerald-50 text-emerald-700 ring-emerald-600/20",
@@ -176,9 +158,25 @@ const App = () => {
 
         {/* Pagination bar */}
         <div className="mt-4 flex items-center justify-between">
-          <p className="text-xs text-slate-500">
-            Page {currentPage + 1} of {totalPages}
-          </p>
+          <div className="flex items-center gap-2 text-xs text-slate-500">
+            <label htmlFor="page-jump" className="whitespace-nowrap">
+              Page
+            </label>
+            <select
+              id="page-jump"
+              value={currentPage}
+              onChange={(e) => table.setPageIndex(Number(e.target.value))}
+              aria-label="Jump to page"
+              className="rounded-lg border border-slate-200 bg-white px-2 py-1.5 text-xs font-medium text-slate-700 focus:border-indigo-400 focus:outline-none focus:ring-2 focus:ring-indigo-400/20"
+            >
+              {Array.from({ length: totalPages }, (_, i) => (
+                <option key={i} value={i}>
+                  {i + 1}
+                </option>
+              ))}
+            </select>
+            <span className="text-slate-400">of {totalPages}</span>
+          </div>
           <Pagination
             currentPage={currentPage}
             totalPages={totalPages}
