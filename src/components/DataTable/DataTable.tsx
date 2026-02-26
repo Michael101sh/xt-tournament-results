@@ -75,7 +75,7 @@ export const DataTable = <TData,>({
       </div>
 
       {showPagination && (
-        <div className="mt-4 flex shrink-0 flex-wrap items-center justify-between gap-3">
+        <div className="mt-4 grid shrink-0 grid-cols-3 items-center gap-3">
           <div className="flex items-center gap-4 text-xs text-slate-500">
             <div className="flex items-center gap-2">
               <label htmlFor="page-jump" className="whitespace-nowrap">
@@ -117,16 +117,18 @@ export const DataTable = <TData,>({
               </div>
             )}
           </div>
-          {totalRows != null && (
-            <span className="text-xs font-semibold text-slate-800">
+          {totalRows != null ? (
+            <span className="text-center text-xs font-semibold text-slate-800">
               {rows.length} of {totalRows.toLocaleString()}
             </span>
-          )}
-          <Pagination
-            currentPage={currentPage}
-            totalPages={totalPages}
-            onPageChange={(page) => table.setPageIndex(page)}
-          />
+          ) : <span />}
+          <div className="flex justify-end">
+            <Pagination
+              currentPage={currentPage}
+              totalPages={totalPages}
+              onPageChange={(page) => table.setPageIndex(page)}
+            />
+          </div>
         </div>
       )}
     </div>
