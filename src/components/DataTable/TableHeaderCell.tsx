@@ -8,7 +8,10 @@ interface TableHeaderCellProps<TData> {
 const TableHeaderCellInner = <TData,>({
   header,
 }: TableHeaderCellProps<TData>) => (
-  <th className="px-5 py-3.5 text-left text-xs font-semibold uppercase tracking-wider text-slate-500 whitespace-nowrap">
+  <th
+    className="px-5 py-3.5 text-left text-xs font-semibold uppercase tracking-wider text-slate-500 whitespace-nowrap"
+    style={{ width: header.getSize() }}
+  >
     {header.isPlaceholder
       ? null
       : flexRender(header.column.columnDef.header, header.getContext())}

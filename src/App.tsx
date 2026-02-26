@@ -39,6 +39,7 @@ const App = () => {
     () => [
       columnHelper.accessor("id", {
         header: "ID",
+        size: 80,
         cell: (info) => (
           <span className="font-mono text-xs text-slate-400">
             #{String(info.getValue()).padStart(3, "0")}
@@ -47,6 +48,7 @@ const App = () => {
       }),
       columnHelper.accessor("name", {
         header: "Player",
+        size: 200,
         cell: (info) => (
           <span className="font-medium text-slate-900">
             {capitalize(info.getValue())}
@@ -55,6 +57,7 @@ const App = () => {
       }),
       columnHelper.accessor("level", {
         header: "Level",
+        size: 120,
         cell: (info) => {
           const level = info.getValue();
           return (
@@ -71,6 +74,7 @@ const App = () => {
       }),
       columnHelper.accessor("score", {
         header: "Score",
+        size: 160,
         cell: (info) => {
           const score = info.getValue();
           return (
