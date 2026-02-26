@@ -2,30 +2,14 @@ import { useMemo, useState } from "react";
 import {
   useReactTable,
   getCoreRowModel,
-  getPaginationRowModel,
   createColumnHelper,
   type PaginationState,
 } from "@tanstack/react-table";
 import { DataTable } from "./components/DataTable";
 import { Pagination } from "./components/Pagination";
+import { usePlayersQuery } from "./hooks/usePlayersQuery";
 import { capitalize, cn } from "./lib/utils";
 import type { Player } from "./types/player";
-
-// Generate 150 sample players to demo pagination with many pages
-const NAMES = [
-  "alice", "bob", "charlie", "diana", "eve", "frank", "grace", "hank", "ivy",
-  "jake", "karen", "leo", "mia", "noah", "olivia", "pete", "quinn", "rita",
-  "sam", "tina", "ursula", "victor", "wendy", "xavier", "yara", "zach",
-  "amber", "blake", "cora", "derek",
-];
-const LEVELS: Player["level"][] = ["rookie", "amateur", "pro"];
-
-const SAMPLE_PLAYERS: Player[] = Array.from({ length: 150 }, (_, i) => ({
-  id: i + 1,
-  name: NAMES[i % NAMES.length],
-  level: LEVELS[i % LEVELS.length],
-  score: 30 + Math.round(Math.sin(i * 0.7) * 60 + 80),
-}));
 
 const LEVEL_STYLES: Record<Player["level"], string> = {
   rookie: "bg-emerald-50 text-emerald-700 ring-emerald-600/20",
@@ -41,6 +25,15 @@ const App = () => {
     pageIndex: 0,
     pageSize: PAGE_SIZE,
   });
+
+  const { data, isLoading, isError, error } = usePlayersQuery(
+    pagination.pageIndex,
+    pagination.pageSize,
+  );
+
+  const players = data?.players ?? [];
+  const totalPlayers = data?.total ?? 0;
+  const totalPages = Math.ceil(totalPlayers / pagination.pageSize);
 
   const columns = useMemo(
     () => [
@@ -100,20 +93,44 @@ const App = () => {
   );
 
   const table = useReactTable({
-    data: SAMPLE_PLAYERS,
+    data: players,
     columns,
     state: { pagination },
     onPaginationChange: setPagination,
     getCoreRowModel: getCoreRowModel(),
-    getPaginationRowModel: getPaginationRowModel(),
+    manualPagination: true,
+    pageCount: totalPages,
   });
 
-  const totalPages = table.getPageCount();
   const currentPage = pagination.pageIndex;
+
+  if (isError) {
+    return (
+      <div className="flex h-screen items-center justify-center bg-gradient-to-br from-slate-50 via-white to-indigo-50/30">
+        <div className="mx-4 max-w-md rounded-xl border border-red-200 bg-white p-8 text-center shadow-lg">
+          <div className="mx-auto mb-4 flex h-12 w-12 items-center justify-center rounded-full bg-red-100">
+            <svg className="h-6 w-6 text-red-600" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2} aria-hidden="true">
+              <path strokeLinecap="round" strokeLinejoin="round" d="M12 9v3.75m9-.75a9 9 0 11-18 0 9 9 0 0118 0zm-9 3.75h.008v.008H12v-.008z" />
+            </svg>
+          </div>
+          <h2 className="text-lg font-semibold text-slate-900">Unable to load data</h2>
+          <p className="mt-2 text-sm text-slate-500">
+            {error instanceof Error ? error.message : "An unexpected error occurred."}
+          </p>
+          <button
+            onClick={() => window.location.reload()}
+            className="mt-5 rounded-lg bg-indigo-600 px-4 py-2 text-sm font-medium text-white shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
+          >
+            Retry
+          </button>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="flex h-screen flex-col overflow-hidden bg-gradient-to-br from-slate-50 via-white to-indigo-50/30">
-      {/* Header — fixed at top */}
+      {/* Header */}
       <div className="shrink-0 border-b border-slate-200/60 bg-white/70 backdrop-blur-sm">
         <div className="mx-auto max-w-5xl px-4 py-6 sm:px-6 lg:px-8">
           <div className="flex items-center gap-3">
@@ -143,23 +160,33 @@ const App = () => {
         </div>
       </div>
 
-      {/* Content — fills remaining space, internal flex layout */}
+      {/* Content */}
       <div className="mx-auto flex min-h-0 w-full max-w-5xl flex-1 flex-col px-4 py-5 sm:px-6 lg:px-8">
         <div className="mb-4 flex shrink-0 items-center justify-between">
           <h2 className="text-sm font-semibold text-slate-700">
             Leaderboard
           </h2>
           <span className="rounded-full bg-slate-100 px-3 py-1 text-xs font-medium text-slate-600">
-            {SAMPLE_PLAYERS.length} players
+            {totalPlayers} players
           </span>
         </div>
 
-        {/* Table — takes remaining height, scrolls internally */}
-        <div className="min-h-0 flex-1">
+        <div className="relative min-h-0 flex-1">
+          {isLoading && (
+            <div className="absolute inset-0 z-20 flex items-center justify-center rounded-xl bg-white/70 backdrop-blur-sm">
+              <div className="flex items-center gap-3 text-sm font-medium text-slate-500">
+                <svg className="h-5 w-5 animate-spin text-indigo-500" fill="none" viewBox="0 0 24 24" aria-hidden="true">
+                  <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
+                  <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z" />
+                </svg>
+                Loading players…
+              </div>
+            </div>
+          )}
           <DataTable table={table} />
         </div>
 
-        {/* Pagination bar — stays below the table */}
+        {/* Pagination bar */}
         <div className="mt-4 flex shrink-0 items-center justify-between">
           <div className="flex items-center gap-2 text-xs text-slate-500">
             <label htmlFor="page-jump" className="whitespace-nowrap">
