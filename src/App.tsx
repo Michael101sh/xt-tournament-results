@@ -1,48 +1,63 @@
-import { useSuspectsQuery } from "./hooks/useSuspectsQuery";
+import { useMemo } from "react";
+import {
+  useReactTable,
+  getCoreRowModel,
+  createColumnHelper,
+} from "@tanstack/react-table";
+import { DataTable } from "./components/DataTable";
+import { capitalize } from "./lib/utils";
+import type { Player } from "./types/player";
+
+// Hardcoded sample data to verify the table infra works
+const SAMPLE_PLAYERS: Player[] = [
+  { id: 1, name: "alice", level: "rookie", score: 84 },
+  { id: 2, name: "bob", level: "pro", score: 136 },
+  { id: 3, name: "charlie", level: "amateur", score: 102 },
+  { id: 4, name: "diana", level: "pro", score: 158 },
+  { id: 5, name: "eve", level: "rookie", score: 47 },
+];
+
+const columnHelper = createColumnHelper<Player>();
 
 const App = () => {
-  const { data: suspects, isLoading, isError, error } = useSuspectsQuery();
+  const columns = useMemo(
+    () => [
+      columnHelper.accessor("id", {
+        header: "ID",
+        cell: (info) => info.getValue(),
+      }),
+      columnHelper.accessor("name", {
+        header: "Name",
+        cell: (info) => capitalize(info.getValue()),
+      }),
+      columnHelper.accessor("level", {
+        header: "Level",
+        cell: (info) => capitalize(info.getValue()),
+      }),
+      columnHelper.accessor("score", {
+        header: "Score",
+        cell: (info) => info.getValue(),
+      }),
+    ],
+    [],
+  );
 
-  if (isLoading) {
-    return (
-      <div className="flex min-h-screen items-center justify-center bg-slate-50">
-        <p className="text-lg text-slate-500">Loading suspects...</p>
-      </div>
-    );
-  }
-
-  if (isError) {
-    return (
-      <div className="flex min-h-screen items-center justify-center bg-slate-50">
-        <div className="rounded-lg border border-red-200 bg-red-50 p-6 text-center">
-          <h2 className="text-lg font-semibold text-red-800">Failed to fetch suspects</h2>
-          <p className="mt-2 text-sm text-red-600">
-            {error instanceof Error ? error.message : "Unknown error"}
-          </p>
-          <p className="mt-1 text-xs text-red-400">
-            Make sure the server is running on http://localhost:20000
-          </p>
-        </div>
-      </div>
-    );
-  }
+  const table = useReactTable({
+    data: SAMPLE_PLAYERS,
+    columns,
+    getCoreRowModel: getCoreRowModel(),
+  });
 
   return (
-    <div className="flex min-h-screen flex-col items-center justify-center gap-6 bg-slate-50 px-4">
-      <h1 className="text-3xl font-bold text-slate-800">
-        XT tournament - Final results
-      </h1>
+    <div className="min-h-screen bg-slate-50">
+      <div className="mx-auto max-w-5xl px-4 py-8 sm:px-6 lg:px-8">
+        <h1 className="text-center text-3xl font-bold tracking-tight text-slate-800 sm:text-4xl">
+          XT tournament - Final results
+        </h1>
 
-      <div className="w-full max-w-md rounded-lg border border-slate-200 bg-white p-6 shadow-sm">
-        <h2 className="text-lg font-semibold text-slate-700">
-          useSuspectsQuery test
-        </h2>
-        <p className="mt-1 text-sm text-slate-500">
-          Fetched {suspects?.length ?? 0} suspect IDs from the server:
-        </p>
-        <pre className="mt-3 max-h-48 overflow-auto rounded bg-slate-100 p-3 text-xs text-slate-700">
-          {JSON.stringify(suspects, null, 2)}
-        </pre>
+        <div className="mt-8">
+          <DataTable table={table} />
+        </div>
       </div>
     </div>
   );
