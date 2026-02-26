@@ -1,4 +1,4 @@
-import { useMemo, useState, useCallback } from "react";
+import { useMemo, useCallback } from "react";
 import {
   useReactTable,
   getCoreRowModel,
@@ -31,11 +31,11 @@ export const PAGE_SIZE_OPTIONS = [10, 20, 50, 100, 500] as const;
 const columnHelper = createColumnHelper<Player>();
 
 export const usePlayersTable = () => {
-  const [pagination, setPagination] = useState<PaginationState>({
+  const [pagination, setPagination] = useLocalStorage<PaginationState>("xt-pagination", {
     pageIndex: 0,
     pageSize: DEFAULT_PAGE_SIZE,
   });
-  const [levelFilter, setLevelFilter] = useState<PlayerLevel | undefined>();
+  const [levelFilter, setLevelFilter] = useLocalStorage<PlayerLevel | undefined>("xt-level-filter", undefined);
   const [searchTerm, setSearchTerm] = useLocalStorage("xt-search", "");
   const debouncedSearch = useDebounce(searchTerm, 300);
 
