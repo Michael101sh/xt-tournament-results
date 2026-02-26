@@ -11,13 +11,16 @@ export const usePlayersQuery = (
   const normalized = search?.trim().toLowerCase() || undefined;
   return useQuery({
     queryKey: ["players", page, pageSize, level, normalized],
-    queryFn: () =>
-      fetchPlayers({
-        start: page * pageSize,
-        n: pageSize,
-        level,
-        search: normalized,
-      }),
+    queryFn: ({ signal }) =>
+      fetchPlayers(
+        {
+          start: page * pageSize,
+          n: pageSize,
+          level,
+          search: normalized,
+        },
+        signal,
+      ),
     placeholderData: keepPreviousData,
   });
 };
