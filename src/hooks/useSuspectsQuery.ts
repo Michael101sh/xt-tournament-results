@@ -1,0 +1,12 @@
+import { useQuery } from "@tanstack/react-query";
+import { fetchSuspects } from "../lib/api";
+
+// Suspects list never changes during server lifetime — cache indefinitely
+export const useSuspectsQuery = () => {
+  return useQuery({
+    queryKey: ["suspects"],
+    queryFn: fetchSuspects,
+    staleTime: Infinity,
+    gcTime: Infinity,
+  });
+};
