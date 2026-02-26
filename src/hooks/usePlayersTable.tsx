@@ -8,6 +8,7 @@ import {
 import { usePlayersQuery } from "./usePlayersQuery";
 import { useSuspectsQuery } from "./useSuspectsQuery";
 import { useDebounce } from "./useDebounce";
+import { useLocalStorage } from "./useLocalStorage";
 import { Tooltip } from "../components/Tooltip";
 import { LevelFilter } from "../components/LevelFilter";
 import { capitalize, cn } from "../lib/utils";
@@ -35,7 +36,7 @@ export const usePlayersTable = () => {
     pageSize: DEFAULT_PAGE_SIZE,
   });
   const [levelFilter, setLevelFilter] = useState<PlayerLevel | undefined>();
-  const [searchTerm, setSearchTerm] = useState("");
+  const [searchTerm, setSearchTerm] = useLocalStorage("xt-search", "");
   const debouncedSearch = useDebounce(searchTerm, 300);
 
   const handleLevelChange = useCallback(
