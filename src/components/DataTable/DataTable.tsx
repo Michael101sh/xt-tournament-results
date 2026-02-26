@@ -46,10 +46,10 @@ export const DataTable = <TData,>({
   }
 
   return (
-    <div className="overflow-hidden rounded-xl border border-slate-200/60 bg-white shadow-lg shadow-slate-200/50 ring-1 ring-slate-900/5">
-      <div className="overflow-x-auto">
+    <div className="flex h-full flex-col overflow-hidden rounded-xl border border-slate-200/60 bg-white shadow-lg shadow-slate-200/50 ring-1 ring-slate-900/5">
+      <div className="overflow-auto">
         <table className="w-full min-w-[520px] border-collapse">
-          <thead>
+          <thead className="sticky top-0 z-10">
             {headerGroups.map((headerGroup) => (
               <TableHeaderGroup
                 key={headerGroup.id}

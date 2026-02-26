@@ -112,10 +112,10 @@ const App = () => {
   const currentPage = pagination.pageIndex;
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-50 via-white to-indigo-50/30">
-      {/* Header */}
-      <div className="border-b border-slate-200/60 bg-white/70 backdrop-blur-sm">
-        <div className="mx-auto max-w-5xl px-4 py-8 sm:px-6 lg:px-8">
+    <div className="flex h-screen flex-col overflow-hidden bg-gradient-to-br from-slate-50 via-white to-indigo-50/30">
+      {/* Header — fixed at top */}
+      <div className="shrink-0 border-b border-slate-200/60 bg-white/70 backdrop-blur-sm">
+        <div className="mx-auto max-w-5xl px-4 py-6 sm:px-6 lg:px-8">
           <div className="flex items-center gap-3">
             <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-gradient-to-br from-indigo-500 to-violet-600 shadow-lg shadow-indigo-500/25">
               <svg
@@ -143,9 +143,9 @@ const App = () => {
         </div>
       </div>
 
-      {/* Content */}
-      <div className="mx-auto max-w-5xl px-4 py-8 sm:px-6 lg:px-8">
-        <div className="mb-5 flex items-center justify-between">
+      {/* Content — fills remaining space, internal flex layout */}
+      <div className="mx-auto flex min-h-0 w-full max-w-5xl flex-1 flex-col px-4 py-5 sm:px-6 lg:px-8">
+        <div className="mb-4 flex shrink-0 items-center justify-between">
           <h2 className="text-sm font-semibold text-slate-700">
             Leaderboard
           </h2>
@@ -154,10 +154,13 @@ const App = () => {
           </span>
         </div>
 
-        <DataTable table={table} />
+        {/* Table — takes remaining height, scrolls internally */}
+        <div className="min-h-0 flex-1">
+          <DataTable table={table} />
+        </div>
 
-        {/* Pagination bar */}
-        <div className="mt-4 flex items-center justify-between">
+        {/* Pagination bar — stays below the table */}
+        <div className="mt-4 flex shrink-0 items-center justify-between">
           <div className="flex items-center gap-2 text-xs text-slate-500">
             <label htmlFor="page-jump" className="whitespace-nowrap">
               Page
