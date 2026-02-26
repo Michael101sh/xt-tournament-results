@@ -1,13 +1,17 @@
-import { useMemo } from "react";
+import { useMemo, useState } from "react";
 import {
   useReactTable,
   getCoreRowModel,
+  getPaginationRowModel,
   createColumnHelper,
+  type PaginationState,
 } from "@tanstack/react-table";
 import { DataTable } from "./components/DataTable";
+import { Pagination } from "./components/Pagination";
 import { capitalize, cn } from "./lib/utils";
 import type { Player } from "./types/player";
 
+// 30 rows so pagination is clearly visible across multiple pages
 const SAMPLE_PLAYERS: Player[] = [
   { id: 1, name: "alice", level: "rookie", score: 84 },
   { id: 2, name: "bob", level: "pro", score: 136 },
@@ -19,6 +23,26 @@ const SAMPLE_PLAYERS: Player[] = [
   { id: 8, name: "hank", level: "rookie", score: 63 },
   { id: 9, name: "ivy", level: "amateur", score: 91 },
   { id: 10, name: "jake", level: "pro", score: 172 },
+  { id: 11, name: "karen", level: "rookie", score: 55 },
+  { id: 12, name: "leo", level: "amateur", score: 128 },
+  { id: 13, name: "mia", level: "pro", score: 164 },
+  { id: 14, name: "noah", level: "rookie", score: 39 },
+  { id: 15, name: "olivia", level: "amateur", score: 110 },
+  { id: 16, name: "pete", level: "pro", score: 149 },
+  { id: 17, name: "quinn", level: "rookie", score: 72 },
+  { id: 18, name: "rita", level: "amateur", score: 97 },
+  { id: 19, name: "sam", level: "pro", score: 181 },
+  { id: 20, name: "tina", level: "rookie", score: 68 },
+  { id: 21, name: "ursula", level: "amateur", score: 114 },
+  { id: 22, name: "victor", level: "pro", score: 155 },
+  { id: 23, name: "wendy", level: "rookie", score: 42 },
+  { id: 24, name: "xavier", level: "amateur", score: 105 },
+  { id: 25, name: "yara", level: "pro", score: 169 },
+  { id: 26, name: "zach", level: "rookie", score: 58 },
+  { id: 27, name: "amber", level: "amateur", score: 122 },
+  { id: 28, name: "blake", level: "pro", score: 143 },
+  { id: 29, name: "cora", level: "rookie", score: 76 },
+  { id: 30, name: "derek", level: "amateur", score: 99 },
 ];
 
 const LEVEL_STYLES: Record<Player["level"], string> = {
@@ -27,9 +51,15 @@ const LEVEL_STYLES: Record<Player["level"], string> = {
   pro: "bg-violet-50 text-violet-700 ring-violet-600/20",
 };
 
+const PAGE_SIZE = 10;
 const columnHelper = createColumnHelper<Player>();
 
 const App = () => {
+  const [pagination, setPagination] = useState<PaginationState>({
+    pageIndex: 0,
+    pageSize: PAGE_SIZE,
+  });
+
   const columns = useMemo(
     () => [
       columnHelper.accessor("id", {
@@ -90,8 +120,14 @@ const App = () => {
   const table = useReactTable({
     data: SAMPLE_PLAYERS,
     columns,
+    state: { pagination },
+    onPaginationChange: setPagination,
     getCoreRowModel: getCoreRowModel(),
+    getPaginationRowModel: getPaginationRowModel(),
   });
+
+  const totalPages = table.getPageCount();
+  const currentPage = pagination.pageIndex;
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-50 via-white to-indigo-50/30">
@@ -137,6 +173,18 @@ const App = () => {
         </div>
 
         <DataTable table={table} />
+
+        {/* Pagination bar */}
+        <div className="mt-4 flex items-center justify-between">
+          <p className="text-xs text-slate-500">
+            Page {currentPage + 1} of {totalPages}
+          </p>
+          <Pagination
+            currentPage={currentPage}
+            totalPages={totalPages}
+            onPageChange={(page) => table.setPageIndex(page)}
+          />
+        </div>
       </div>
     </div>
   );
