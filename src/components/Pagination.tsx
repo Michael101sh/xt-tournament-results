@@ -111,7 +111,7 @@ const PageButton = ({
         "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-400 focus-visible:ring-offset-1",
         active && "bg-indigo-600 text-white shadow-md shadow-indigo-500/30",
         !active && !disabled && "text-slate-600 hover:bg-slate-100 hover:text-slate-900",
-        disabled && "cursor-not-allowed text-slate-300",
+        disabled && "cursor-not-allowed text-slate-400",
       )}
     >
       {children}

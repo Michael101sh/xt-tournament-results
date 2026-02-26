@@ -71,6 +71,7 @@ export const PlayerTable = ({
       totalPages={totalPages}
       currentPage={currentPage}
       rowClassName={rowClassName}
+      totalRows={totalPlayers}
       pageSize={pageSize}
       pageSizeOptions={pageSizeOptions}
       onPageSizeChange={onPageSizeChange}

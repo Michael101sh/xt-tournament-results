@@ -12,6 +12,7 @@ interface DataTableProps<TData> {
   isLoading?: boolean;
   totalPages?: number;
   currentPage?: number;
+  totalRows?: number;
   pageSize?: number;
   pageSizeOptions?: readonly number[];
   onPageSizeChange?: (size: number) => void;
@@ -24,6 +25,7 @@ export const DataTable = <TData,>({
   isLoading = false,
   totalPages = 0,
   currentPage = 0,
+  totalRows,
   pageSize,
   pageSizeOptions,
   onPageSizeChange,
@@ -92,7 +94,7 @@ export const DataTable = <TData,>({
                   </option>
                 ))}
               </select>
-              <span className="text-slate-400">of {totalPages}</span>
+              <span className="font-semibold text-slate-800">of {totalPages}</span>
             </div>
             {pageSizeOptions && onPageSizeChange && (
               <div className="flex items-center gap-2">
@@ -115,6 +117,11 @@ export const DataTable = <TData,>({
               </div>
             )}
           </div>
+          {totalRows != null && (
+            <span className="text-xs font-semibold text-slate-800">
+              {rows.length} of {totalRows.toLocaleString()}
+            </span>
+          )}
           <Pagination
             currentPage={currentPage}
             totalPages={totalPages}
