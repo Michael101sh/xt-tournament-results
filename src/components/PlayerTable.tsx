@@ -13,6 +13,9 @@ interface PlayerTableProps {
   onSearchChange: (value: string) => void;
   rowClassName?: (row: Player) => string | undefined;
   onRefresh: () => void;
+  pageSize: number;
+  pageSizeOptions: readonly number[];
+  onPageSizeChange: (size: number) => void;
 }
 
 export const PlayerTable = ({
@@ -25,6 +28,9 @@ export const PlayerTable = ({
   onSearchChange,
   rowClassName,
   onRefresh,
+  pageSize,
+  pageSizeOptions,
+  onPageSizeChange,
 }: PlayerTableProps) => (
   <div className="mx-auto flex min-h-0 w-full max-w-5xl flex-1 flex-col px-4 py-5 sm:px-6 lg:px-8">
     <div className="mb-4 flex shrink-0 flex-wrap items-center gap-3">
@@ -65,6 +71,9 @@ export const PlayerTable = ({
       totalPages={totalPages}
       currentPage={currentPage}
       rowClassName={rowClassName}
+      pageSize={pageSize}
+      pageSizeOptions={pageSizeOptions}
+      onPageSizeChange={onPageSizeChange}
     />
   </div>
 );

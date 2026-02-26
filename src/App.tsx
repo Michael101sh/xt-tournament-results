@@ -1,7 +1,7 @@
 import { Header } from "./components/Header";
 import { ErrorCard } from "./components/ErrorCard";
 import { PlayerTable } from "./components/PlayerTable";
-import { usePlayersTable } from "./hooks/usePlayersTable";
+import { usePlayersTable, PAGE_SIZE_OPTIONS } from "./hooks/usePlayersTable";
 
 const App = () => {
   const {
@@ -14,6 +14,8 @@ const App = () => {
     error,
     searchTerm,
     handleSearchChange,
+    pageSize,
+    handlePageSizeChange,
     rowClassName,
     refetch,
   } = usePlayersTable();
@@ -37,6 +39,9 @@ const App = () => {
         onSearchChange={handleSearchChange}
         rowClassName={rowClassName}
         onRefresh={refetch}
+        pageSize={pageSize}
+        pageSizeOptions={PAGE_SIZE_OPTIONS}
+        onPageSizeChange={handlePageSizeChange}
       />
     </div>
   );

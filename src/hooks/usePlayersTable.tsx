@@ -25,13 +25,14 @@ const LEVEL_STYLES: Record<Player["level"], string> = {
   pro: "bg-violet-50 text-violet-700 ring-violet-600/20",
 };
 
-const PAGE_SIZE = 10;
+const DEFAULT_PAGE_SIZE = 10;
+export const PAGE_SIZE_OPTIONS = [10, 20, 50, 100, 500] as const;
 const columnHelper = createColumnHelper<Player>();
 
 export const usePlayersTable = () => {
   const [pagination, setPagination] = useState<PaginationState>({
     pageIndex: 0,
-    pageSize: PAGE_SIZE,
+    pageSize: DEFAULT_PAGE_SIZE,
   });
   const [levelFilter, setLevelFilter] = useState<PlayerLevel | undefined>();
   const [searchTerm, setSearchTerm] = useState("");
@@ -49,6 +50,13 @@ export const usePlayersTable = () => {
     (value: string) => {
       setSearchTerm(value);
       setPagination((prev) => ({ ...prev, pageIndex: 0 }));
+    },
+    [],
+  );
+
+  const handlePageSizeChange = useCallback(
+    (size: number) => {
+      setPagination({ pageIndex: 0, pageSize: size });
     },
     [],
   );
@@ -198,6 +206,8 @@ export const usePlayersTable = () => {
     error,
     searchTerm,
     handleSearchChange,
+    pageSize: pagination.pageSize,
+    handlePageSizeChange,
     rowClassName,
     refetch,
   };
