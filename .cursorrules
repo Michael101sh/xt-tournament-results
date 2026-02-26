@@ -35,12 +35,15 @@ Follow these rules when you write code:
 - Implement accessibility features on elements. For example, a tag should have a tabindex=“0”, aria-label, on:click, and on:keydown, and similar attributes.
 - Use consts instead of functions, for example, “const toggle = () =>”. Also, define a type if possible.
 
-- **Data Fetching (TanStack Query):**
+- **Data Fetching (TanStack Query v5):**
 - Use TanStack Query for all server-state management and data fetching.
-- Wrap fetching logic in custom hooks (e.g., `useDashboardData`) to decouple UI from data fetching logic.
+- Wrap fetching logic in custom hooks (e.g., `usePlayersQuery`) to decouple UI from data fetching logic.
 - Always define and use TypeScript interfaces for the expected API responses.
 - Implement proper loading and error states using early returns for better readability.
-- Use `staleTime` and `cacheTime` configurations to optimize performance and minimize unnecessary network requests.
+- Use `staleTime` and `gcTime` (not `cacheTime` — that's v4) configurations to optimize performance and minimize unnecessary network requests.
+- For paginated queries, use `placeholderData: keepPreviousData` (imported from `@tanstack/react-query`) to prevent UI flicker when navigating between pages.
+- For data that never changes (e.g., a static suspects list), use both `staleTime: Infinity` and `gcTime: Infinity` to prevent refetching and garbage collection.
+
 - **Tables (TanStack Table):**
 - Use TanStack Table (`@tanstack/react-table`) for all table implementations; never use plain HTML tables or other table libraries.
 - Always define a `ColumnDef<TData>` array with explicit TypeScript types for columns.
