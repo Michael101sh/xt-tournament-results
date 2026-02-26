@@ -43,7 +43,7 @@ export const DataTable = <TData,>({
         {isLoading && <LoadingOverlay />}
         <div className="flex h-full flex-col overflow-hidden rounded-xl border border-slate-200/60 bg-white shadow-lg shadow-slate-200/50 ring-1 ring-slate-900/5">
           <div className="overflow-auto">
-            <table className="w-full min-w-[520px] table-fixed border-collapse">
+            <table className="w-full min-w-[640px] table-fixed border-collapse">
               <thead className="sticky top-0 z-10">
                 {headerGroups.map((headerGroup) => (
                   <TableHeaderGroup
@@ -67,7 +67,7 @@ export const DataTable = <TData,>({
       </div>
 
       {showPagination && (
-        <div className="mt-4 flex shrink-0 items-center justify-between">
+        <div className="mt-4 flex shrink-0 flex-wrap items-center justify-between gap-3">
           <div className="flex items-center gap-2 text-xs text-slate-500">
             <label htmlFor="page-jump" className="whitespace-nowrap">
               Page

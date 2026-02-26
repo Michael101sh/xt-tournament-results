@@ -7,14 +7,14 @@ interface PaginationProps {
   onPageChange: (page: number) => void;
 }
 
-const SIBLINGS = 2;
+const SIBLINGS = 1;
 
 // Builds the visible page range with ellipsis markers
 const buildPageRange = (
   currentPage: number,
   totalPages: number,
 ): (number | "ellipsis-start" | "ellipsis-end")[] => {
-  if (totalPages <= 7) {
+  if (totalPages <= 5) {
     return Array.from({ length: totalPages }, (_, i) => i);
   }
 
@@ -107,7 +107,7 @@ const PageButton = ({
       aria-current={active ? "page" : undefined}
       tabIndex={0}
       className={cn(
-        "inline-flex h-9 min-w-9 items-center justify-center rounded-lg px-2.5 text-sm font-medium transition-all duration-150",
+        "inline-flex h-8 min-w-8 items-center justify-center rounded-lg px-2 text-sm font-medium transition-all duration-150",
         "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-400 focus-visible:ring-offset-1",
         active && "bg-indigo-600 text-white shadow-md shadow-indigo-500/30",
         !active && !disabled && "text-slate-600 hover:bg-slate-100 hover:text-slate-900",
@@ -163,7 +163,7 @@ export const Pagination = ({
             return (
               <span
                 key={page}
-                className="inline-flex h-9 w-9 items-center justify-center text-slate-400"
+                className="inline-flex h-8 w-8 items-center justify-center text-slate-400"
                 aria-hidden="true"
               >
                 &hellip;

@@ -53,7 +53,7 @@ export const usePlayersTable = () => {
     [],
   );
 
-  const { data, isLoading, isError, error } = usePlayersQuery(
+  const { data, isLoading, isFetching, isError, error, refetch } = usePlayersQuery(
     pagination.pageIndex,
     pagination.pageSize,
     levelFilter,
@@ -193,11 +193,12 @@ export const usePlayersTable = () => {
     totalPlayers,
     totalPages,
     currentPage: pagination.pageIndex,
-    isLoading,
+    isLoading: isLoading || isFetching,
     isError,
     error,
     searchTerm,
     handleSearchChange,
     rowClassName,
+    refetch,
   };
 };

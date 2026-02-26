@@ -15,6 +15,7 @@ const App = () => {
     searchTerm,
     handleSearchChange,
     rowClassName,
+    refetch,
   } = usePlayersTable();
 
   if (isError) {
@@ -35,6 +36,7 @@ const App = () => {
         searchTerm={searchTerm}
         onSearchChange={handleSearchChange}
         rowClassName={rowClassName}
+        onRefresh={refetch}
       />
     </div>
   );
