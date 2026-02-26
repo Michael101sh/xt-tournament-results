@@ -14,7 +14,7 @@ const TableRowInner = <TData,>({ row, className }: TableRowProps<TData>) => {
   return (
     <tr
       className={cn(
-        "border-t border-slate-100 bg-white transition-colors hover:bg-slate-50",
+        "border-b border-slate-100/80 bg-white transition-colors duration-150 hover:bg-indigo-50/40",
         className,
       )}
     >

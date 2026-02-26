@@ -6,7 +6,7 @@ interface TableCellProps<TData> {
 }
 
 const TableCellInner = <TData,>({ cell }: TableCellProps<TData>) => (
-  <td className="px-4 py-3 text-slate-700">
+  <td className="px-5 py-3.5 text-sm text-slate-700">
     {flexRender(cell.column.columnDef.cell, cell.getContext())}
   </td>
 );
