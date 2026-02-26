@@ -2,9 +2,10 @@ import { type ReactNode, useMemo } from "react";
 import { type Table } from "@tanstack/react-table";
 import { TableHeaderGroup } from "./TableHeaderGroup";
 import { TableRow } from "./TableRow";
-import { LoadingOverlay } from "../LoadingOverlay";
 import { Pagination } from "../Pagination";
+import { LoadingOverlay } from "../LoadingOverlay";
 import { EmptyState } from "./EmptyState";
+import { useDeferredLoading } from "../../hooks/useDeferredLoading";
 
 interface DataTableProps<TData> {
   table: Table<TData>;
@@ -40,6 +41,7 @@ export const DataTable = <TData,>({
   }, [rows, rowClassName]);
 
   const showPagination = totalPages > 1;
+  const showOverlay = useDeferredLoading(isLoading);
 
   if (rows.length === 0 && !isLoading) {
     return <>{emptyState ?? <EmptyState />}</>;
@@ -48,7 +50,7 @@ export const DataTable = <TData,>({
   return (
     <div className="flex min-h-0 flex-1 flex-col">
       <div className="relative min-h-0 flex-1">
-        {isLoading && <LoadingOverlay />}
+        {showOverlay && <LoadingOverlay />}
         <div className="flex h-full flex-col overflow-hidden rounded-xl border border-slate-200/60 bg-white shadow-lg shadow-slate-200/50 ring-1 ring-slate-900/5">
           <div className="flex-1 overflow-auto">
             <table className="w-full min-w-[640px] table-fixed border-collapse">
