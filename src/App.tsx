@@ -79,7 +79,7 @@ const App = () => {
           const score = info.getValue();
           return (
             <div className="flex items-center gap-2.5">
-              <div className="h-1.5 w-16 overflow-hidden rounded-full bg-slate-100">
+              <div className="h-1.5 w-full max-w-[120px] overflow-hidden rounded-full bg-slate-100">
                 <div
                   className="h-full rounded-full bg-gradient-to-r from-indigo-500 to-violet-500"
                   style={{ width: `${Math.min((score / 200) * 100, 100)}%` }}
