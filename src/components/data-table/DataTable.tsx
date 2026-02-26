@@ -47,7 +47,8 @@ export const DataTable = <TData,>({
     return new Map(rows.map((row) => [row.id, rowClassName(row.original)]));
   }, [rows, rowClassName]);
 
-  const showPagination = totalPages > 1;
+  const hasMultiplePages = totalPages > 1;
+  const showFooter = hasMultiplePages || totalRows != null || (pageSizeOptions && onPageSizeChange);
   const showOverlay = useDeferredLoading(isLoading);
 
   if (rows.length === 0 && !isLoading) {
@@ -83,28 +84,30 @@ export const DataTable = <TData,>({
         </div>
       </div>
 
-      {showPagination && (
+      {showFooter && (
         <div className="mt-4 grid shrink-0 grid-cols-3 items-center gap-3">
           <div className="flex items-center gap-4 text-xs text-slate-500">
-            <div className="flex items-center gap-2">
-              <label htmlFor={pageJumpId} className="whitespace-nowrap">
-                Page
-              </label>
-              <select
-                id={pageJumpId}
-                value={currentPage}
-                onChange={(e) => table.setPageIndex(Number(e.target.value))}
-                aria-label="Jump to page"
-                className="rounded-lg border border-slate-200 bg-white px-2 py-1.5 text-xs font-medium text-slate-700 focus:border-indigo-400 focus:outline-none focus:ring-2 focus:ring-indigo-400/20"
-              >
-                {Array.from({ length: totalPages }, (_, i) => (
-                  <option key={i} value={i}>
-                    {i + 1}
-                  </option>
-                ))}
-              </select>
-              <span className="font-semibold text-slate-800">of {totalPages}</span>
-            </div>
+            {hasMultiplePages && (
+              <div className="flex items-center gap-2">
+                <label htmlFor={pageJumpId} className="whitespace-nowrap">
+                  Page
+                </label>
+                <select
+                  id={pageJumpId}
+                  value={currentPage}
+                  onChange={(e) => table.setPageIndex(Number(e.target.value))}
+                  aria-label="Jump to page"
+                  className="rounded-lg border border-slate-200 bg-white px-2 py-1.5 text-xs font-medium text-slate-700 focus:border-indigo-400 focus:outline-none focus:ring-2 focus:ring-indigo-400/20"
+                >
+                  {Array.from({ length: totalPages }, (_, i) => (
+                    <option key={i} value={i}>
+                      {i + 1}
+                    </option>
+                  ))}
+                </select>
+                <span className="font-semibold text-slate-800">of {totalPages}</span>
+              </div>
+            )}
             {pageSizeOptions && onPageSizeChange && (
               <div className="flex items-center gap-2">
                 <label htmlFor={pageSizeId} className="whitespace-nowrap">

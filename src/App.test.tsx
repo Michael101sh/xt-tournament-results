@@ -79,7 +79,7 @@ describe("App", () => {
       currentPage: 0,
       isLoading: false,
       isError: true,
-      error: "string error",
+      error: "string error" as unknown as Error,
       searchTerm: "",
       handleSearchChange: vi.fn(),
       pageSize: 10,

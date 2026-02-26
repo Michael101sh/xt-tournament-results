@@ -79,13 +79,14 @@ describe("DataTable", () => {
     expect(screen.getByText("Loading players…")).toBeInTheDocument();
   });
 
-  it("hides pagination when totalPages <= 1", () => {
-    render(<DataTableHarness totalPages={1} currentPage={0} />);
+  it("hides page-jump when totalPages <= 1 but still shows footer with totalRows", () => {
+    render(<DataTableHarness totalPages={1} currentPage={0} totalRows={3} />);
 
     expect(screen.queryByLabelText("Jump to page")).not.toBeInTheDocument();
+    expect(screen.getByText(/of 3/)).toBeInTheDocument();
   });
 
-  it("shows pagination controls when totalPages > 1", () => {
+  it("shows page-jump when totalPages > 1", () => {
     render(<DataTableHarness totalPages={3} currentPage={0} />);
 
     expect(screen.getByLabelText("Jump to page")).toBeInTheDocument();
