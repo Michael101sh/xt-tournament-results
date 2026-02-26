@@ -10,7 +10,6 @@ interface TableRowProps<TData> {
 
 const TableRowInner = <TData,>({ row, className }: TableRowProps<TData>) => {
   const cells = row.getVisibleCells();
-
   return (
     <tr
       className={cn(

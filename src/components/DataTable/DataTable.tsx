@@ -1,73 +1,99 @@
-import { useMemo } from "react";
+import { type ReactNode, useMemo } from "react";
 import { type Table } from "@tanstack/react-table";
 import { TableHeaderGroup } from "./TableHeaderGroup";
 import { TableRow } from "./TableRow";
+import { LoadingOverlay } from "../LoadingOverlay";
+import { Pagination } from "../Pagination";
+import { EmptyState } from "./EmptyState";
 
 interface DataTableProps<TData> {
   table: Table<TData>;
-  /** Derive a conditional CSS class from row data (must be memoized by caller) */
   rowClassName?: (row: TData) => string | undefined;
+  isLoading?: boolean;
+  totalPages?: number;
+  currentPage?: number;
+  emptyState?: ReactNode;
 }
 
 export const DataTable = <TData,>({
   table,
   rowClassName,
+  isLoading = false,
+  totalPages = 0,
+  currentPage = 0,
+  emptyState,
 }: DataTableProps<TData>) => {
   const headerGroups = table.getHeaderGroups();
   const { rows } = table.getRowModel();
 
-  // Pre-compute row classNames in one pass so TableRow receives a stable string
   const rowClassNames = useMemo(() => {
     if (!rowClassName) return undefined;
     return new Map(rows.map((row) => [row.id, rowClassName(row.original)]));
   }, [rows, rowClassName]);
 
-  if (rows.length === 0) {
-    return (
-      <div className="flex flex-col items-center justify-center py-20 text-slate-400">
-        <svg
-          className="mb-3 h-12 w-12 text-slate-300"
-          fill="none"
-          viewBox="0 0 24 24"
-          stroke="currentColor"
-          strokeWidth={1.5}
-          aria-hidden="true"
-        >
-          <path
-            strokeLinecap="round"
-            strokeLinejoin="round"
-            d="M21 21l-5.197-5.197m0 0A7.5 7.5 0 105.196 5.196a7.5 7.5 0 0010.607 10.607z"
-          />
-        </svg>
-        <p className="text-sm font-medium">No results found</p>
-        <p className="mt-1 text-xs text-slate-400">Try adjusting your search or filters.</p>
-      </div>
-    );
+  const showPagination = totalPages > 1;
+
+  if (rows.length === 0 && !isLoading) {
+    return <>{emptyState ?? <EmptyState />}</>;
   }
 
   return (
-    <div className="flex h-full flex-col overflow-hidden rounded-xl border border-slate-200/60 bg-white shadow-lg shadow-slate-200/50 ring-1 ring-slate-900/5">
-      <div className="overflow-auto">
-        <table className="w-full min-w-[520px] table-fixed border-collapse">
-          <thead className="sticky top-0 z-10">
-            {headerGroups.map((headerGroup) => (
-              <TableHeaderGroup
-                key={headerGroup.id}
-                headerGroup={headerGroup}
-              />
-            ))}
-          </thead>
-          <tbody>
-            {rows.map((row) => (
-              <TableRow
-                key={row.id}
-                row={row}
-                className={rowClassNames?.get(row.id)}
-              />
-            ))}
-          </tbody>
-        </table>
+    <div className="flex h-full flex-col">
+      <div className="relative min-h-0 flex-1">
+        {isLoading && <LoadingOverlay />}
+        <div className="flex h-full flex-col overflow-hidden rounded-xl border border-slate-200/60 bg-white shadow-lg shadow-slate-200/50 ring-1 ring-slate-900/5">
+          <div className="overflow-auto">
+            <table className="w-full min-w-[520px] table-fixed border-collapse">
+              <thead className="sticky top-0 z-10">
+                {headerGroups.map((headerGroup) => (
+                  <TableHeaderGroup
+                    key={headerGroup.id}
+                    headerGroup={headerGroup}
+                  />
+                ))}
+              </thead>
+              <tbody>
+                {rows.map((row) => (
+                  <TableRow
+                    key={row.id}
+                    row={row}
+                    className={rowClassNames?.get(row.id)}
+                  />
+                ))}
+              </tbody>
+            </table>
+          </div>
+        </div>
       </div>
+
+      {showPagination && (
+        <div className="mt-4 flex shrink-0 items-center justify-between">
+          <div className="flex items-center gap-2 text-xs text-slate-500">
+            <label htmlFor="page-jump" className="whitespace-nowrap">
+              Page
+            </label>
+            <select
+              id="page-jump"
+              value={currentPage}
+              onChange={(e) => table.setPageIndex(Number(e.target.value))}
+              aria-label="Jump to page"
+              className="rounded-lg border border-slate-200 bg-white px-2 py-1.5 text-xs font-medium text-slate-700 focus:border-indigo-400 focus:outline-none focus:ring-2 focus:ring-indigo-400/20"
+            >
+              {Array.from({ length: totalPages }, (_, i) => (
+                <option key={i} value={i}>
+                  {i + 1}
+                </option>
+              ))}
+            </select>
+            <span className="text-slate-400">of {totalPages}</span>
+          </div>
+          <Pagination
+            currentPage={currentPage}
+            totalPages={totalPages}
+            onPageChange={(page) => table.setPageIndex(page)}
+          />
+        </div>
+      )}
     </div>
   );
 };
