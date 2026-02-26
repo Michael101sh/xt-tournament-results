@@ -9,7 +9,7 @@ interface TableHeaderGroupProps<TData> {
 const TableHeaderGroupInner = <TData,>({
   headerGroup,
 }: TableHeaderGroupProps<TData>) => (
-  <tr className="border-b border-slate-200/80 bg-gradient-to-r from-slate-50 to-slate-100/80">
+  <tr className="border-b border-slate-200 bg-gradient-to-r from-slate-50 to-slate-100">
     {headerGroup.headers.map((header) => (
       <TableHeaderCell key={header.id} header={header} />
     ))}
