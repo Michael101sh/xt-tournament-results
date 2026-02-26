@@ -19,10 +19,11 @@ export const Header = () => (
           </svg>
         </div>
         <div>
-          <h1 className="text-2xl font-extrabold tracking-tight text-slate-900 sm:text-3xl">
+          <h1 className="text-xl font-extrabold tracking-tight text-slate-900 sm:text-2xl">
             XT tournament
+            <span className="mx-2 font-light text-slate-300">—</span>
+            <span className="font-semibold text-slate-500">Final results</span>
           </h1>
-          <p className="text-sm font-medium text-slate-500">Final results</p>
         </div>
       </div>
     </div>
