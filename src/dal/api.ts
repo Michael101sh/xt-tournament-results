@@ -26,8 +26,8 @@ export const fetchPlayers = async (
   return { players, total };
 };
 
-export const fetchSuspects = async (): Promise<number[]> => {
-  const response = await fetch(`${API_BASE}/players/suspects`);
+export const fetchSuspects = async (signal?: AbortSignal): Promise<number[]> => {
+  const response = await fetch(`${API_BASE}/players/suspects`, { signal });
   if (!response.ok) {
     throw new Error(`Failed to fetch suspects: ${response.status}`);
   }

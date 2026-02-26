@@ -48,6 +48,7 @@ export const PlayerTable = ({
           type="button"
           onClick={onRefresh}
           aria-label="Refresh data"
+          tabIndex={0}
           className="inline-flex h-8 w-8 items-center justify-center rounded-lg border border-slate-200 bg-white text-slate-500 shadow-sm transition-colors hover:bg-slate-50 hover:text-slate-700 focus:outline-none focus:ring-2 focus:ring-indigo-400 focus:ring-offset-1"
         >
           <svg

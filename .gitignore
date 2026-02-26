@@ -1,10 +1,25 @@
-# Server Executables
+# Dependencies
+node_modules/
+
+# Build output
+dist/
+build/
+*.tsbuildinfo
+
+# Server executables
 serverLx
 serverWin.exe
 serverMac64
 
-# Production Build
-dist/
-build/
-node_modules/
+# Environment
 *.local
+.env
+.env.*
+
+# Editor / OS
+.vscode/
+.idea/
+*.swp
+*.swo
+.DS_Store
+Thumbs.db

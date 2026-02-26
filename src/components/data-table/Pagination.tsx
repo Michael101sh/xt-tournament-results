@@ -1,4 +1,4 @@
-import { useMemo, useCallback } from "react";
+import { useMemo } from "react";
 import { cn } from "../../lib/utils";
 
 interface PaginationProps {
@@ -86,38 +86,25 @@ const PageButton = ({
   active,
   ariaLabel,
   children,
-}: PageButtonProps) => {
-  const handleKeyDown = useCallback(
-    (e: React.KeyboardEvent) => {
-      if ((e.key === "Enter" || e.key === " ") && !disabled) {
-        e.preventDefault();
-        onClick();
-      }
-    },
-    [disabled, onClick],
-  );
-
-  return (
-    <button
-      type="button"
-      onClick={onClick}
-      onKeyDown={handleKeyDown}
-      disabled={disabled}
-      aria-label={ariaLabel}
-      aria-current={active ? "page" : undefined}
-      tabIndex={0}
-      className={cn(
-        "inline-flex h-8 min-w-8 items-center justify-center rounded-lg px-2 text-sm font-medium transition-all duration-150",
-        "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-400 focus-visible:ring-offset-1",
-        active && "bg-indigo-600 text-white shadow-md shadow-indigo-500/30",
-        !active && !disabled && "text-slate-600 hover:bg-slate-100 hover:text-slate-900",
-        disabled && "cursor-not-allowed text-slate-400",
-      )}
-    >
-      {children}
-    </button>
-  );
-};
+}: PageButtonProps) => (
+  <button
+    type="button"
+    onClick={onClick}
+    disabled={disabled}
+    aria-label={ariaLabel}
+    aria-current={active ? "page" : undefined}
+    tabIndex={0}
+    className={cn(
+      "inline-flex h-8 min-w-8 items-center justify-center rounded-lg px-2 text-sm font-medium transition-all duration-150",
+      "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-400 focus-visible:ring-offset-1",
+      active && "bg-indigo-600 text-white shadow-md shadow-indigo-500/30",
+      !active && !disabled && "text-slate-600 hover:bg-slate-100 hover:text-slate-900",
+      disabled && "cursor-not-allowed text-slate-400",
+    )}
+  >
+    {children}
+  </button>
+);
 
 // ── Pagination (public) ─────────────────────────────────────────────────
 

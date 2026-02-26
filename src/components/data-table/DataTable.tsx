@@ -1,4 +1,4 @@
-import { type ReactNode, useMemo } from "react";
+import { type ReactNode, useId, useMemo } from "react";
 import { type Table } from "@tanstack/react-table";
 import { TableHeaderGroup } from "./TableHeaderGroup";
 import { TableRow } from "./TableRow";
@@ -34,6 +34,9 @@ export const DataTable = <TData,>({
   onPageSizeChange,
   emptyState,
 }: DataTableProps<TData>) => {
+  const instanceId = useId();
+  const pageJumpId = `${instanceId}-page-jump`;
+  const pageSizeId = `${instanceId}-page-size`;
   const headerGroups = table.getHeaderGroups();
   const { rows } = table.getRowModel();
 
@@ -84,11 +87,11 @@ export const DataTable = <TData,>({
         <div className="mt-4 grid shrink-0 grid-cols-3 items-center gap-3">
           <div className="flex items-center gap-4 text-xs text-slate-500">
             <div className="flex items-center gap-2">
-              <label htmlFor="page-jump" className="whitespace-nowrap">
+              <label htmlFor={pageJumpId} className="whitespace-nowrap">
                 Page
               </label>
               <select
-                id="page-jump"
+                id={pageJumpId}
                 value={currentPage}
                 onChange={(e) => table.setPageIndex(Number(e.target.value))}
                 aria-label="Jump to page"
@@ -104,11 +107,11 @@ export const DataTable = <TData,>({
             </div>
             {pageSizeOptions && onPageSizeChange && (
               <div className="flex items-center gap-2">
-                <label htmlFor="page-size" className="whitespace-nowrap">
+                <label htmlFor={pageSizeId} className="whitespace-nowrap">
                   Rows
                 </label>
                 <select
-                  id="page-size"
+                  id={pageSizeId}
                   value={pageSize}
                   onChange={(e) => onPageSizeChange(Number(e.target.value))}
                   aria-label="Rows per page"

@@ -60,6 +60,7 @@ export const SearchInput = ({ value, onChange }: SearchInputProps) => {
           type="button"
           onClick={handleClear}
           aria-label="Clear search"
+          tabIndex={0}
           className="absolute right-2.5 top-1/2 -translate-y-1/2 rounded p-0.5 text-slate-400 hover:text-slate-600"
         >
           <svg

@@ -5,7 +5,7 @@ import { fetchSuspects } from "../dal/api";
 export const useSuspectsQuery = () => {
   return useQuery({
     queryKey: ["suspects"],
-    queryFn: fetchSuspects,
+    queryFn: ({ signal }) => fetchSuspects(signal),
     staleTime: Infinity,
     gcTime: Infinity,
   });

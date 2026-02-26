@@ -29,6 +29,7 @@ const LEVEL_STYLES: Record<Player["level"], string> = {
   pro: "bg-violet-50 text-violet-700 ring-violet-600/20",
 };
 
+const MAX_SCORE = 200;
 const DEFAULT_PAGE_SIZE = 10;
 export const PAGE_SIZE_OPTIONS = [10, 20, 50, 100, 500] as const;
 const columnHelper = createColumnHelper<Player>();
@@ -47,7 +48,7 @@ export const usePlayersTable = () => {
       setLevelFilter(level);
       setPagination((prev) => ({ ...prev, pageIndex: 0 }));
     },
-    [],
+    [setLevelFilter, setPagination],
   );
 
   const handleSearchChange = useCallback(
@@ -55,14 +56,14 @@ export const usePlayersTable = () => {
       setSearchTerm(value);
       setPagination((prev) => ({ ...prev, pageIndex: 0 }));
     },
-    [],
+    [setSearchTerm, setPagination],
   );
 
   const handlePageSizeChange = useCallback(
     (size: number) => {
       setPagination({ pageIndex: 0, pageSize: size });
     },
-    [],
+    [setPagination],
   );
 
   const { data, isLoading, isFetching, isError, error, refetch } = usePlayersQuery(
@@ -139,9 +140,9 @@ export const usePlayersTable = () => {
         size: 150,
         cell: (info) => {
           const score = info.getValue();
-          const pct = Math.min((score / 200) * 100, 100);
+          const pct = Math.min((score / MAX_SCORE) * 100, 100);
           return (
-            <Tooltip content={`Score: ${score} / 200 (${pct.toFixed(0)}%)`} className="block">
+            <Tooltip content={`Score: ${score} / ${MAX_SCORE} (${pct.toFixed(0)}%)`} className="block">
               <div className="flex items-center gap-2.5">
                 <div className="h-1.5 w-full max-w-[120px] overflow-hidden rounded-full bg-slate-100">
                   <div
