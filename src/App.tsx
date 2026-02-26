@@ -110,7 +110,7 @@ const App = () => {
 
   if (isError) {
     return (
-      <div className="flex h-screen items-center justify-center bg-gradient-to-br from-slate-50 via-white to-indigo-50/30">
+      <div className="bg-mesh flex h-screen items-center justify-center">
         <div className="mx-4 max-w-md rounded-xl border border-red-200 bg-white p-8 text-center shadow-lg">
           <div className="mx-auto mb-4 flex h-12 w-12 items-center justify-center rounded-full bg-red-100">
             <svg className="h-6 w-6 text-red-600" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2} aria-hidden="true">
@@ -133,9 +133,9 @@ const App = () => {
   }
 
   return (
-    <div className="flex h-screen flex-col overflow-hidden bg-gradient-to-br from-slate-50 via-white to-indigo-50/30">
+    <div className="bg-mesh flex h-screen flex-col overflow-hidden">
       {/* Header */}
-      <div className="shrink-0 border-b border-slate-200/60 bg-white/70 backdrop-blur-sm">
+      <div className="shrink-0 border-b border-slate-200/60 bg-white/60 backdrop-blur-md">
         <div className="mx-auto max-w-5xl px-4 py-6 sm:px-6 lg:px-8">
           <div className="flex items-center gap-3">
             <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-gradient-to-br from-indigo-500 to-violet-600 shadow-lg shadow-indigo-500/25">
