@@ -11,6 +11,7 @@ interface PlayerTableProps {
   isLoading: boolean;
   searchTerm: string;
   onSearchChange: (value: string) => void;
+  rowClassName?: (row: Player) => string | undefined;
 }
 
 export const PlayerTable = ({
@@ -21,6 +22,7 @@ export const PlayerTable = ({
   isLoading,
   searchTerm,
   onSearchChange,
+  rowClassName,
 }: PlayerTableProps) => (
   <div className="mx-auto flex min-h-0 w-full max-w-5xl flex-1 flex-col px-4 py-5 sm:px-6 lg:px-8">
     <div className="mb-4 flex shrink-0 items-center justify-between gap-4">
@@ -40,6 +42,7 @@ export const PlayerTable = ({
       isLoading={isLoading}
       totalPages={totalPages}
       currentPage={currentPage}
+      rowClassName={rowClassName}
     />
   </div>
 );

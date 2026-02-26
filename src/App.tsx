@@ -14,6 +14,7 @@ const App = () => {
     error,
     searchTerm,
     handleSearchChange,
+    rowClassName,
   } = usePlayersTable();
 
   if (isError) {
@@ -33,6 +34,7 @@ const App = () => {
         isLoading={isLoading}
         searchTerm={searchTerm}
         onSearchChange={handleSearchChange}
+        rowClassName={rowClassName}
       />
     </div>
   );
