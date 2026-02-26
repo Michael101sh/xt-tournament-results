@@ -6,6 +6,7 @@ import {
   type PaginationState,
 } from "@tanstack/react-table";
 import { usePlayersQuery } from "./usePlayersQuery";
+import { useDebounce } from "./useDebounce";
 import { Tooltip } from "../components/Tooltip";
 import { LevelFilter } from "../components/LevelFilter";
 import { capitalize, cn } from "../lib/utils";
@@ -32,6 +33,8 @@ export const usePlayersTable = () => {
     pageSize: PAGE_SIZE,
   });
   const [levelFilter, setLevelFilter] = useState<PlayerLevel | undefined>();
+  const [searchTerm, setSearchTerm] = useState("");
+  const debouncedSearch = useDebounce(searchTerm, 300);
 
   const handleLevelChange = useCallback(
     (level: PlayerLevel | undefined) => {
@@ -41,10 +44,19 @@ export const usePlayersTable = () => {
     [],
   );
 
+  const handleSearchChange = useCallback(
+    (value: string) => {
+      setSearchTerm(value);
+      setPagination((prev) => ({ ...prev, pageIndex: 0 }));
+    },
+    [],
+  );
+
   const { data, isLoading, isError, error } = usePlayersQuery(
     pagination.pageIndex,
     pagination.pageSize,
     levelFilter,
+    debouncedSearch,
   );
 
   const players = data?.players ?? [];
@@ -59,7 +71,7 @@ export const usePlayersTable = () => {
         cell: (info) => (
           <Tooltip content={`Player ID: ${info.getValue()}`}>
             <span className="font-mono text-xs text-slate-400">
-              #{String(info.getValue()).padStart(3, "0")}
+              #{info.getValue()}
             </span>
           </Tooltip>
         ),
@@ -141,5 +153,7 @@ export const usePlayersTable = () => {
     isLoading,
     isError,
     error,
+    searchTerm,
+    handleSearchChange,
   };
 };

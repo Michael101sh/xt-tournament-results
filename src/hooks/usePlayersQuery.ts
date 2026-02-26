@@ -8,14 +8,15 @@ export const usePlayersQuery = (
   level?: PlayerLevel,
   search?: string,
 ) => {
+  const normalized = search?.trim().toLowerCase() || undefined;
   return useQuery({
-    queryKey: ["players", page, pageSize, level, search],
+    queryKey: ["players", page, pageSize, level, normalized],
     queryFn: () =>
       fetchPlayers({
         start: page * pageSize,
         n: pageSize,
         level,
-        search: search || undefined,
+        search: normalized,
       }),
     placeholderData: keepPreviousData,
   });

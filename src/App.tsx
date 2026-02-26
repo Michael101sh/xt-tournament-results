@@ -12,6 +12,8 @@ const App = () => {
     isLoading,
     isError,
     error,
+    searchTerm,
+    handleSearchChange,
   } = usePlayersTable();
 
   if (isError) {
@@ -29,6 +31,8 @@ const App = () => {
         totalPages={totalPages}
         currentPage={currentPage}
         isLoading={isLoading}
+        searchTerm={searchTerm}
+        onSearchChange={handleSearchChange}
       />
     </div>
   );
